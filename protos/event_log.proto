@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+enum ActionTypeProto {
+    create = 0;
+    update = 1;
+    delete = 2;
+    undefine = 3;
+}
+
+enum EntityTypeProto {
+    company = 0;
+    gl = 1;
+    transaction = 2;
+    undefined = 3;
+}
+
+message FileProto {
+    bytes data = 1;
+    string name = 2;
+}
+
+message EventLogProto {
+  int32 id = 1;
+  ActionTypeProto action_type = 2;
+  EntityTypeProto entity_type = 3;
+  string data = 4;
+  string created_at = 6;
+  FileProto file = 7;
+  string ip = 8;
+}
+
+service EventServiceProto {
+  rpc SyncEvent(stream EventLogProto) returns (IsSyncMessageProto) {}
+}
+
+message IsSyncMessageProto {
+  string userIP = 1;
+  string dateTime = 2;
+}
